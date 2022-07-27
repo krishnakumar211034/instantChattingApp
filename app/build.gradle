@@ -12,10 +12,10 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+//    changes to be made to use data binding .....
     buildTypes {
         release {
             minifyEnabled true
@@ -23,6 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    //.......ends up here and even include build features{.....}
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -38,6 +39,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-auth:21.0.6'
+//    dependency for Data Binding
+    implementation 'androidx.databinding:databinding-runtime:7.2.1'
     testImplementation 'junit:junit:4.13.2'
 
     //glide
@@ -56,6 +59,8 @@ dependencies {
 //    firebase
     implementation 'com.google.firebase:firebase-messaging:23.0.6'
     implementation 'com.google.firebase:firebase-firestore:24.2.0'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

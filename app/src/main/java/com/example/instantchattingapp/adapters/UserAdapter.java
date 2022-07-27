@@ -1,69 +1,72 @@
 package com.example.instantchattingapp.adapters;
 
+
+import static android.util.Base64.DEFAULT;
 import static android.util.Base64.decode;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.instantchattingapp.R;
-import com.example.instantchattingapp.listeners.UserListener;
+import com.example.instantchattingapp.databinding.ItemContainerUserBinding;
 import com.example.instantchattingapp.models.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ChatHolder>{
-        private ArrayList<User> arr;
-        private Context context;
-        private final UserListener userListener;
-        public UserAdapter(ArrayList<User> arr, Context context, UserListener userListener) {
-            this.arr = arr;
-            this.context = context;
-            this.userListener = userListener;
-        }
-        public ChatHolder onCreateViewHolder(ViewGroup parent,int viewType){
-            View inflater = LayoutInflater.from(context).inflate(R.layout.item_container_user,parent,false);
-            ChatHolder holder =new ChatHolder(inflater);
-            return holder;
-        }
-        class ChatHolder extends RecyclerView.ViewHolder {
-            ConstraintLayout root;
-            TextView name, email;
-            ImageView img;
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder>{
+    private List<User> arr;
+    public UserAdapter(List<User> arr) {
+        this.arr = arr;
+    }
 
-            public ChatHolder(View itemView) {
-                super(itemView);
-                name = itemView.findViewById(R.id.textName);
-                email = itemView.findViewById(R.id.textEmail);
-                img = itemView.findViewById(R.id.userProfile);
-                root = (ConstraintLayout) itemView.getRootView();
-            }
+    @NonNull
+    @Override
+    // creates the UserViewHolder using inflate operation
+    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemContainerUserBinding itemContainerUserBinding = ItemContainerUserBinding.inflate(
+                LayoutInflater.from(parent.getContext()),parent,false);
+        return new UserViewHolder(itemContainerUserBinding);
+    }
+    @Override
+    // calls upon the method from UserViewHolder class to setdata into layout from the adapter
+    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+        holder.setData(arr.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return arr.size();
+    }
+
+    class UserViewHolder extends RecyclerView.ViewHolder{
+        private ItemContainerUserBinding binding;
+        UserViewHolder(ItemContainerUserBinding binding){
+            super(binding.getRoot());
+            this.binding = binding;
         }
-    public void onBindViewHolder(ChatHolder holder, int position) {
-            int index=position;
-            holder.name.setText(arr.get(position).getName());
-            holder.email.setText(arr.get(position).getEmail());
-            holder.img.setImageBitmap(getUserImage(arr.get(position).getImage()));
-            holder.root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    userListener.onUserClicked(arr.get(index));
-                }
-            });
+        public void setData(User user){
+            binding.textName.setText(user.getName());
+            binding.textEmail.setText(user.getEmail() );
+//            binding.userProfile.setImageBitmap(getUserImage(user.getName()));
         }
-        public int getItemCount() {
-            return arr.size();
-        }
-        private Bitmap getUserImage(String encodedImage){
-            byte[] bytes = decode(encodedImage, android.util.Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(bytes,0, bytes.length);
-        }
+    }
+    private Bitmap getUserImage(String encodedImage){
+        byte[] bytes = decode(encodedImage, Base64.NO_WRAP);
+        return BitmapFactory.decodeByteArray(bytes,0, bytes.length);
+    }
 }
+
+
+
+
+
+
+
+
+
+

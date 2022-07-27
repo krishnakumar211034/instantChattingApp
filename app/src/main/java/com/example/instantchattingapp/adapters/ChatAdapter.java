@@ -1,29 +1,34 @@
 package com.example.instantchattingapp.adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.instantchattingapp.databinding.RecievedMessageContainerBinding;
-import com.example.instantchattingapp.databinding.SentMessageContainerBinding;
+import com.example.instantchattingapp.R;
 import com.example.instantchattingapp.models.ChatMessage;
 
 import java.util.ArrayList;
 
+
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Bitmap recieverProfileImage;
     private final ArrayList<ChatMessage> chatMessages;
+    private final Context context;
     private final String SenderId;
     private final int VIEW_TYPE_SENT = 1;
     private final int VIEW_TYPE_RECIEVE = 2;
 
-    public ChatAdapter(Bitmap recieverProfileImage, ArrayList<ChatMessage> chatMessages, String senderId) {
+    public ChatAdapter(Context context, ArrayList<ChatMessage> chatMessages, Bitmap recieverProfileImage, String senderId) {
         this.recieverProfileImage = recieverProfileImage;
         this.chatMessages = chatMessages;
+        this.context = context;
         SenderId = senderId;
     }
 
@@ -31,15 +36,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType==VIEW_TYPE_SENT){
-            return new sentMessageViewHolder(SentMessageContainerBinding.inflate(
-                    LayoutInflater.from(parent.getContext()),
-                    parent,
-                    false));
+            return new sentMessageViewHolder(LayoutInflater.from(context).inflate(R.layout.sent_message_container, parent, false));
         } else {
-            return new recievedMessageViewHolder(RecievedMessageContainerBinding.inflate(
-                    LayoutInflater.from(parent.getContext()),
-                    parent,
-                    false));
+            return new recievedMessageViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recieved_message_container, parent, false));
         }
     }
 
@@ -66,27 +65,31 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public static class sentMessageViewHolder extends RecyclerView.ViewHolder{
-        private SentMessageContainerBinding binding;
-        public sentMessageViewHolder(SentMessageContainerBinding binding) {
-            super(binding.getRoot());
-            this.binding=binding;
+    private class sentMessageViewHolder extends RecyclerView.ViewHolder{
+        private TextView message,dateTime;
+        public sentMessageViewHolder(View view) {
+            super(view);
+            message = view.findViewById(R.id.textMessage);
+            dateTime = view.findViewById(R.id.textDateTime);
         }
-        private void setData(ChatMessage chatMessage){
-            binding.textMessage.setText(chatMessage.getMessage());
-            binding.textDateTime.setText(chatMessage.getDateTime());
+        public void setData(ChatMessage chatMessage){
+            message.setText(chatMessage.getMessage());
+            dateTime.setText(chatMessage.getDateTime());
         }
     }
-    public static class recievedMessageViewHolder extends RecyclerView.ViewHolder{
-        private RecievedMessageContainerBinding binding;
-        public recievedMessageViewHolder(RecievedMessageContainerBinding binding){
-            super(binding.getRoot());
-            this.binding=binding;
+    private class recievedMessageViewHolder extends RecyclerView.ViewHolder{
+        private TextView message,dateTime;
+        private ImageView profile;
+        public recievedMessageViewHolder(View view) {
+            super(view);
+            message = view.findViewById(R.id.textMessage);
+            dateTime = view.findViewById(R.id.textDateTime);
+            profile = view.findViewById(R.id.userProfile);
         }
-        private void setData(ChatMessage chatMessage,Bitmap recieverProfileImage){
-            binding.textMessage.setText(chatMessage.getMessage());
-            binding.textDateTime.setText(chatMessage.getDateTime());
-            binding.userProfile.setImageBitmap(recieverProfileImage);
+        public void setData(ChatMessage chatMessage,Bitmap recieverProfileImage){
+             message.setText(chatMessage.getMessage());
+            dateTime.setText(chatMessage.getDateTime());
+            profile.setImageBitmap(recieverProfileImage);
         }
     }
 }

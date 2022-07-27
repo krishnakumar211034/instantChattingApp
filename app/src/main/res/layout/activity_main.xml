@@ -8,7 +8,7 @@
     android:background="#41E1D4"
     android:orientation="horizontal"
     tools:context=".activities.Login_Activity">
-    \* for rounded button *\
+<!--    for rounded button -->
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/image_profile"

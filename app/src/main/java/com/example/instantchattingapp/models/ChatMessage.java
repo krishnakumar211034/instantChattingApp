@@ -1,8 +1,10 @@
 package com.example.instantchattingapp.models;
 
+import java.util.Date;
+
 public class ChatMessage {
     private String senderId,recieverId,message,dateTime;
-
+    public Date dateObject;
     public ChatMessage(String senderId, String recieverId, String message, String dateTime) {
         this.senderId = senderId;
         this.recieverId = recieverId;

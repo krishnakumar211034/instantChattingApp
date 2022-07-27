@@ -9,18 +9,6 @@
     tools:context=".activities.chatActivity">
 
     <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/top_content_background"
-        app:layout_constraintBottom_toTopOf="@+id/input_message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-    <View
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -72,7 +60,7 @@
         app:layout_constraintVertical_bias="0.619" />
 
     <FrameLayout
-        android:id="@+id/frameLayout3"
+        android:id="@+id/sendLayoutFrame"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
@@ -82,11 +70,12 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/sendButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
             android:padding="8dp"
-            android:src="@drawable/ic_round_send" />
+            android:src="@drawable/ic_round_send"
+            android:tint="@color/white" />
     </FrameLayout>
 
     <EditText
@@ -98,17 +87,17 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/chat_input_background"
         android:ems="10"
-        android:textColor="@color/white"
         android:hint="Enter the Text"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:textColor="@color/white"
         android:textColorHint="@color/secondary_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout3"
-        app:layout_constraintRight_toRightOf="@+id/frameLayout3"
+        app:layout_constraintEnd_toStartOf="@+id/sendLayoutFrame"
+        app:layout_constraintRight_toRightOf="@+id/sendLayoutFrame"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 
@@ -123,26 +112,29 @@
         app:layout_constraintTop_toBottomOf="@+id/imageBack" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView2"
+        android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="12dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/input_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewSupporter"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        app:stackFromEnd="true"
+        tools:ignore="SpeakableTextPresentCheck"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView2"
+        app:layout_constraintBottom_toBottomOf="@+id/chatRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 

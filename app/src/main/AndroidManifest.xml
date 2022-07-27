@@ -22,10 +22,9 @@
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.UserActivity"
-            android:exported="false" />
+            />
         <activity
             android:name=".activities.Signup_Activity"
-            android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.Login_Activity"
@@ -41,9 +40,9 @@
             android:name=".activities.Reset_Activity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-
+            android:name=".activities.MainActivity"
+            />
+<!--permission services for -->
         <service
             android:name=".firebase.MessagingService"
             android:exported="false">
@@ -54,6 +53,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+<!--        permission ends here-->
     </application>
 
 </manifest>

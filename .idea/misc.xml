@@ -6,9 +6,12 @@
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable-v24/button_background.xml" value="0.184" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable-v24/edit_view_background.xml" value="0.139" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable-v24/front_page.xml" value="0.139" />
+        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1275" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/bottom_content_background.xml" value="0.139" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/chat_input_background.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/circular.xml" value="0.139" />
+        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/ic_add.xml" value="0.1275" />
+        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/ic_back_arrow.xml" value="0.1275" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.167" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/ic_round_button.xml" value="0.1395" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/ic_round_power.xml" value="0.1395" />
@@ -20,12 +23,12 @@
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/round_image.xml" value="0.139" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/sent_message_background.xml" value="0.166" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/top_content_background.xml" value="0.1395" />
-        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_chat.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_chat.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_reset.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_sign_in.xml" value="0.16145833333333334" />
-        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
+        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_user.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/item_container_user.xml" value="0.22" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/recieved_message_container.xml" value="0.16666666666666666" />

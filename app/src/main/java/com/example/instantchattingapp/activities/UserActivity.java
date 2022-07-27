@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.instantchattingapp.R;
 import com.example.instantchattingapp.adapters.UserAdapter;
+import com.example.instantchattingapp.databinding.ActivityUserBinding;
 import com.example.instantchattingapp.listeners.UserListener;
 import com.example.instantchattingapp.models.User;
 import com.example.instantchattingapp.utilities.Constants;
@@ -26,41 +28,35 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 public class UserActivity extends AppCompatActivity implements UserListener {
+    ActivityUserBinding binding;
     private PreferenceManager preferenceManager;
-    private TextView error_text_message;
-    private ProgressBar progressBar;
-    private RecyclerView recyclerView;
-    private ImageView backPressedImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        binding = ActivityUserBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
-
-        progressBar = findViewById(R.id.progress_bar);
-        error_text_message = findViewById(R.id.error_text_message);
-        recyclerView = findViewById(R.id.userRecyclerView);
-        backPressedImage = findViewById(R.id.imageBack);
-        backPressedImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        setListener();
         getUserDetails();
     }
-    private void loading(boolean isLoading){
-        if(isLoading) progressBar.setVisibility(View.VISIBLE);
-        else progressBar.setVisibility(View.INVISIBLE);
+
+    private void setListener() {
+        binding.imageBack.setOnClickListener(view -> onBackPressed() );
     }
-    private void showErrorMessage(){
-        error_text_message.setText(String.format("%s","No User available"));
-        error_text_message.setVisibility(View.VISIBLE);
+
+    // sets the visibility of progress bar
+    private void loading(boolean isLoading){
+        if(isLoading) binding.progressBar.setVisibility(View.VISIBLE);
+        else binding.progressBar.setVisibility(View.INVISIBLE);
+    }
+    private void showErrorMessage() {
+        binding.errorTextMessage.setText(String.format("%s","No User available"));
+        binding.errorTextMessage.setVisibility(View.VISIBLE);
     }
      private void getUserDetails(){
         loading(true);
         FirebaseFirestore firebaseFirestore =FirebaseFirestore.getInstance();
-        firebaseFirestore.collection(Constants.USERS)
+        firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -70,20 +66,19 @@ public class UserActivity extends AppCompatActivity implements UserListener {
                         if(task.isSuccessful() && task.getResult()!=null) {
                             ArrayList<User> arr = new ArrayList<>();
                             for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-//                                if (currentUserId.equals(queryDocumentSnapshot.getId())) {
-//                                    continue;
-//                                }
+                                if(currentUserId.equals(queryDocumentSnapshot.getId())) continue;
                                 User user = new User();
                                 user.setName(queryDocumentSnapshot.getString(Constants.KEY_NAME));
                                 user.setEmail(queryDocumentSnapshot.getString(Constants.KEY_EMAIL));
                                 user.setToken(queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN));
                                 user.setImage(queryDocumentSnapshot.getString(Constants.KEY_IMAGE));
+                                user.setId(queryDocumentSnapshot.getId());
                                 arr.add(user);
                             }
                             if (arr.size() > 0) {
-                                UserAdapter userAdapter = new UserAdapter(arr, getApplicationContext(), UserActivity.this);
-                                recyclerView.setAdapter(userAdapter);
-                                recyclerView.setVisibility(View.VISIBLE);
+                                UserAdapter userAdapter = new UserAdapter(arr);
+                                binding.userRecyclerView.setAdapter(userAdapter);
+                                binding.userRecyclerView.setVisibility(View.VISIBLE);
                             } else showErrorMessage();
                         } else showErrorMessage();
                     }
