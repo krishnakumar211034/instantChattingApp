@@ -3,11 +3,11 @@ package com.example.instantchattingapp.models;
 import java.util.Date;
 
 public class ChatMessage {
-    private String senderId,recieverId,message,dateTime;
+    private String senderId,receiverId,message,dateTime;
     public Date dateObject;
     public ChatMessage(String senderId, String recieverId, String message, String dateTime) {
         this.senderId = senderId;
-        this.recieverId = recieverId;
+        this.receiverId = recieverId;
         this.message = message;
         this.dateTime = dateTime;
     }
@@ -22,10 +22,10 @@ public class ChatMessage {
     }
 
     public String getRecieverId() {
-        return recieverId;
+        return receiverId;
     }
     public void setRecieverId(String recieverId) {
-        this.recieverId = recieverId;
+        this.receiverId = recieverId;
     }
 
     public String getMessage() {

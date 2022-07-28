@@ -27,7 +27,7 @@ import java.util.Locale;
 
 public class chatActivity extends AppCompatActivity {
     private ActivityChatBinding binding;
-    private User reciever;
+    private User receiver;
     private ArrayList<ChatMessage> chatMessages;
     private ChatAdapter chatAdapter;
     private PreferenceManager preferenceManager;
@@ -38,8 +38,8 @@ public class chatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setListener();
         loadingUserDetails();
+        setListener();
         init();
         listenMessage();
     }
@@ -50,7 +50,7 @@ public class chatActivity extends AppCompatActivity {
     private void sendMessage()  {
         HashMap<String,Object> message = new HashMap<>();
         message.put(Constants.KEY_SENDER_ID,preferenceManager.getString(Constants.KEY_USER_ID));
-        message.put(Constants.KEY_RECIEVER_ID,reciever.getId());
+        message.put(Constants.KEY_RECIEVER_ID, receiver.getId());
         message.put(Constants.KEY_MESSAGE,binding.inputMessage.getText().toString());
         binding.inputMessage.setText(null);
         message.put(Constants.KEY_TIMESTAMP,new Date());
@@ -63,9 +63,8 @@ public class chatActivity extends AppCompatActivity {
     public void init(){
         preferenceManager = new PreferenceManager(getApplicationContext());
         chatMessages = new ArrayList<ChatMessage>();
-        chatAdapter = new ChatAdapter(getApplicationContext(),chatMessages,
-                getBitmapFromencodedString(reciever.getImage()),
-                preferenceManager.getString(Constants.KEY_USER_ID));
+        chatAdapter = new ChatAdapter(getBitmapFromencodedString(receiver.getImage()),
+                chatMessages, preferenceManager.getString(Constants.KEY_USER_ID));
         binding.chatRecyclerView.setAdapter(chatAdapter);
         firebaseFirestore = FirebaseFirestore.getInstance();
     }
@@ -74,8 +73,8 @@ public class chatActivity extends AppCompatActivity {
         return BitmapFactory.decodeByteArray(bytes,0, bytes.length);
     }
     private void loadingUserDetails(){
-        reciever = (User) getIntent().getSerializableExtra(Constants.KEY_USER);
-        binding.userName.setText(reciever.getName());
+        receiver = (User) getIntent().getSerializableExtra(Constants.KEY_USER);
+        binding.userName.setText(receiver.getName());
     }
 
     //didn't understand this portion of the code
@@ -108,10 +107,10 @@ public class chatActivity extends AppCompatActivity {
     private void listenMessage(){
         firebaseFirestore.collection(Constants.KEY_COLLECTION_CHAT).
                 whereEqualTo(Constants.KEY_SENDER_ID,preferenceManager.getString(Constants.KEY_SENDER_ID)).
-                whereEqualTo(Constants.KEY_RECIEVER_ID,reciever.getId()).
+                whereEqualTo(Constants.KEY_RECIEVER_ID, receiver.getId()).
                 addSnapshotListener(eventListener);
         firebaseFirestore.collection(Constants.KEY_COLLECTION_CHAT).
-                whereEqualTo(Constants.KEY_SENDER_ID,reciever.getId()).
+                whereEqualTo(Constants.KEY_SENDER_ID, receiver.getId()).
                 whereEqualTo(Constants.KEY_RECIEVER_ID,preferenceManager.getString(Constants.KEY_SENDER_ID)).
                 addSnapshotListener(eventListener);
     }

@@ -2,17 +2,11 @@ package com.example.instantchattingapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.example.instantchattingapp.R;
 import com.example.instantchattingapp.adapters.UserAdapter;
 import com.example.instantchattingapp.databinding.ActivityUserBinding;
 import com.example.instantchattingapp.listeners.UserListener;
@@ -49,11 +43,13 @@ public class UserActivity extends AppCompatActivity implements UserListener {
         if(isLoading) binding.progressBar.setVisibility(View.VISIBLE);
         else binding.progressBar.setVisibility(View.INVISIBLE);
     }
+    // this message is displayed when users list is empty
     private void showErrorMessage() {
         binding.errorTextMessage.setText(String.format("%s","No User available"));
         binding.errorTextMessage.setVisibility(View.VISIBLE);
     }
-     private void getUserDetails(){
+    // fetch the user details from the firebase firestore  and insert it into the class User
+    private void getUserDetails(){
         loading(true);
         FirebaseFirestore firebaseFirestore =FirebaseFirestore.getInstance();
         firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS)
@@ -76,7 +72,7 @@ public class UserActivity extends AppCompatActivity implements UserListener {
                                 arr.add(user);
                             }
                             if (arr.size() > 0) {
-                                UserAdapter userAdapter = new UserAdapter(arr);
+                                UserAdapter userAdapter = new UserAdapter(arr, UserActivity.this);
                                 binding.userRecyclerView.setAdapter(userAdapter);
                                 binding.userRecyclerView.setVisibility(View.VISIBLE);
                             } else showErrorMessage();

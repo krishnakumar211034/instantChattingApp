@@ -1,7 +1,6 @@
 package com.example.instantchattingapp.adapters;
 
 
-import static android.util.Base64.DEFAULT;
 import static android.util.Base64.decode;
 
 import android.graphics.Bitmap;
@@ -14,14 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instantchattingapp.databinding.ItemContainerUserBinding;
+import com.example.instantchattingapp.listeners.UserListener;
 import com.example.instantchattingapp.models.User;
 
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder>{
-    private List<User> arr;
-    public UserAdapter(List<User> arr) {
+    private final List<User> arr;
+    private final UserListener userListener;
+    public UserAdapter(List<User> arr, UserListener userListener) {
         this.arr = arr;
+        this.userListener = userListener;
     }
 
     @NonNull
@@ -53,8 +55,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             binding.textName.setText(user.getName());
             binding.textEmail.setText(user.getEmail() );
 //            binding.userProfile.setImageBitmap(getUserImage(user.getName()));
+            binding.getRoot().setOnClickListener(view -> userListener.onUserClicked(user));
         }
     }
+    // converts image in the string format to Bitmap and currently it is not working
     private Bitmap getUserImage(String encodedImage){
         byte[] bytes = decode(encodedImage, Base64.NO_WRAP);
         return BitmapFactory.decodeByteArray(bytes,0, bytes.length);
