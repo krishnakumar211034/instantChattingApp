@@ -5,9 +5,11 @@ import java.util.Date;
 public class ChatMessage {
     private String senderId,receiverId,message,dateTime;
     public Date dateObject;
-    public ChatMessage(String senderId, String recieverId, String message, String dateTime) {
+    private String conversionId, conversionName, conversionImage;
+
+    public ChatMessage(String senderId, String receiverId, String message, String dateTime) {
         this.senderId = senderId;
-        this.receiverId = recieverId;
+        this.receiverId = receiverId;
         this.message = message;
         this.dateTime = dateTime;
     }
@@ -41,4 +43,26 @@ public class ChatMessage {
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
+
+    public String getConversionId() {
+        return conversionId;
+    }
+    public void setConversionId(String conversionId) {
+        this.conversionId = conversionId;
+    }
+
+    public String getConversionName() {
+        return conversionName;
+    }
+    public void setConversionName(String conversionName) {
+        this.conversionName = conversionName;
+    }
+
+    public String getConversionImage() {
+        return conversionImage;
+    }
+    public void setConversionImage(String conversionImage) {
+        this.conversionImage = conversionImage;
+    }
+
 }

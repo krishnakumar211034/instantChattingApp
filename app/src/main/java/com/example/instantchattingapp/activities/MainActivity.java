@@ -15,22 +15,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.instantchattingapp.R;
+import com.example.instantchattingapp.adapters.RecentConversionAdapter;
 import com.example.instantchattingapp.databinding.ActivityMainBinding;
+import com.example.instantchattingapp.listeners.ConversionListener;
+import com.example.instantchattingapp.models.ChatMessage;
+import com.example.instantchattingapp.models.User;
 import com.example.instantchattingapp.utilities.Constants;
 import com.example.instantchattingapp.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements ConversionListener {
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
+    private ArrayList<ChatMessage> chatMessages;
+    private RecentConversionAdapter recentConversionAdapter;
+    private FirebaseFirestore firebaseFirestore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +52,13 @@ public class MainActivity extends AppCompatActivity {
         loadUserDetails();
         getToken();
         setListener();
-//        UserAdapter adapter = new UserAdapter(arr,MainActivity.this);
-//        RecyclerView view=findViewById(R.id.root);
-//        view.setAdapter(adapter);
-//        view.setLayoutManager(new LinearLayoutManager(this));
+        listenConversations();
+    }
+    private void init(){
+        chatMessages = new ArrayList<>();
+        recentConversionAdapter = new RecentConversionAdapter(chatMessages,this);
+        binding.conversationRecyclerView.setAdapter(recentConversionAdapter);
+        firebaseFirestore = FirebaseFirestore.getInstance();
     }
     private void setListener(){
         binding.powerButton.setOnClickListener(view -> signOut());
@@ -68,6 +83,57 @@ public class MainActivity extends AppCompatActivity {
         documentReference.update(Constants.KEY_FCM_TOKEN,token)
                 .addOnFailureListener(e ->showToast("unable to update token..."));
     }
+    private void listenConversations(){
+        firebaseFirestore.collection(Constants.KEY_COLLECTION_CONVERSATIONS).
+                whereEqualTo(Constants.KEY_SENDER_ID,preferenceManager.getString(Constants.KEY_USER_ID)).
+                addSnapshotListener(eventListener);
+        firebaseFirestore.collection(Constants.KEY_COLLECTION_CONVERSATIONS).
+                whereEqualTo(Constants.KEY_RECEIVER_ID,preferenceManager.getString(Constants.KEY_USER_ID)).
+                addSnapshotListener(eventListener);
+    }
+
+    private final EventListener<QuerySnapshot> eventListener = (value, error) ->{
+        if(error!=null) return;
+        if(value!=null){
+            for(DocumentChange documentChange : value.getDocumentChanges()){
+                if(documentChange.getType() == DocumentChange.Type.ADDED){
+                    String senderId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
+                    String receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
+                    ChatMessage chatMessage = new ChatMessage();
+                    chatMessage.setSenderId(senderId);
+                    chatMessage.setReceiverId(receiverId);
+                    if(preferenceManager.getString(Constants.KEY_USER_ID).equals(senderId)){
+                        chatMessage.setConversionId(documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID));
+                        chatMessage.setConversionName(documentChange.getDocument().getString(Constants.KEY_RECEIVER_NAME));
+                        chatMessage.setConversionImage(documentChange.getDocument().getString(Constants.KEY_RECEIVER_IMAGE));
+                    } else {
+                        chatMessage.setConversionId(documentChange.getDocument().getString(Constants.KEY_SENDER_ID));
+                        chatMessage.setConversionName(documentChange.getDocument().getString(Constants.KEY_SENDER_NAME));
+                        chatMessage.setConversionImage(documentChange.getDocument().getString(Constants.KEY_SENDER_IMAGE));
+                    }
+                    chatMessage.setMessage(documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE));
+                    chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
+                    chatMessages.add(chatMessage);
+                } else if(documentChange.getType() == DocumentChange.Type.MODIFIED){
+                    for (int i = 0; i <chatMessages.size(); i++) {
+                        String senderId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
+                        String receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
+                        if(chatMessages.get(i).getSenderId().equals(senderId) &&
+                                chatMessages.get(i).getReceiverId().equals(receiverId)){
+                            chatMessages.get(i).setMessage(documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE));
+                            chatMessages.get(i).dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
+                            break;
+                        }
+                    }
+                }
+            }
+            Collections.sort(chatMessages, (obj1, obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
+            recentConversionAdapter.notifyDataSetChanged();
+            binding.conversationRecyclerView.smoothScrollToPosition(0);
+            binding.conversationRecyclerView.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.GONE);
+        }
+    };
     // used to get the Token saved on the firebaseFirestore
     private void getToken(){
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
@@ -86,5 +152,12 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), Login_Activity.class));
                     finish();
                 }).addOnFailureListener(e -> showToast("Unable to sign out..."));
+    }
+
+    @Override
+    public void onConversionClicked(User user) {
+        Intent intent = new Intent(getApplicationContext(), chatActivity.class);
+        intent.putExtra(Constants.KEY_USER,user);
+        startActivity(intent);
     }
 }

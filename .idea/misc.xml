@@ -25,11 +25,13 @@
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/drawable/top_content_background.xml" value="0.1395" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_chat.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_login.xml" value="0.22" />
-        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_reset.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_sign_in.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/activity_user.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/item_container_item_conversation.xml" value="0.1578125" />
+        <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/item_container_recent_conversation.xml" value="0.1578125" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/item_container_user.xml" value="0.22" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/recieved_message_container.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Krishna Kumar K/AndroidStudioProjects/InstantChattingApp/app/src/main/res/layout/sent_message_container.xml" value="0.16666666666666666" />
