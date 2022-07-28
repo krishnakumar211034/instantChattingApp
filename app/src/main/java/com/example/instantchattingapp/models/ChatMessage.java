@@ -21,11 +21,11 @@ public class ChatMessage {
         this.senderId = senderId;
     }
 
-    public String getRecieverId() {
+    public String getReceiverId() {
         return receiverId;
     }
-    public void setRecieverId(String recieverId) {
-        this.receiverId = recieverId;
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 
     public String getMessage() {

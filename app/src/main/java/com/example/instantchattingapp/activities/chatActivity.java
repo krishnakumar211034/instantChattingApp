@@ -38,8 +38,8 @@ public class chatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        loadingUserDetails();
         setListener();
+        loadingUserDetails();
         init();
         listenMessage();
     }
@@ -50,11 +50,11 @@ public class chatActivity extends AppCompatActivity {
     private void sendMessage()  {
         HashMap<String,Object> message = new HashMap<>();
         message.put(Constants.KEY_SENDER_ID,preferenceManager.getString(Constants.KEY_USER_ID));
-        message.put(Constants.KEY_RECIEVER_ID, receiver.getId());
+        message.put(Constants.KEY_RECEIVER_ID, receiver.getId());
         message.put(Constants.KEY_MESSAGE,binding.inputMessage.getText().toString());
-        binding.inputMessage.setText(null);
         message.put(Constants.KEY_TIMESTAMP,new Date());
         firebaseFirestore.collection(Constants.KEY_COLLECTION_CHAT).add(message);
+        binding.inputMessage.setText(null);
     }
     private String getReadableDateTime(Date date){
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
@@ -86,7 +86,7 @@ public class chatActivity extends AppCompatActivity {
                 if(documentChange.getType() == DocumentChange.Type.ADDED){
                     ChatMessage chatMessage = new ChatMessage();
                     chatMessage.setSenderId(documentChange.getDocument().getString(Constants.KEY_SENDER_ID));
-                    chatMessage.setRecieverId(documentChange.getDocument().getString(Constants.KEY_RECIEVER_ID));
+                    chatMessage.setReceiverId(documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID));
                     chatMessage.setMessage(documentChange.getDocument().getString(Constants.KEY_MESSAGE));
                     chatMessage.setDateTime(getReadableDateTime(documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP)));
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
@@ -98,20 +98,20 @@ public class chatActivity extends AppCompatActivity {
                 chatAdapter.notifyDataSetChanged();
             } else {
                 chatAdapter.notifyItemRangeInserted(chatMessages.size(),chatMessages.size());
-                binding.chatRecyclerView.scrollToPosition(chatMessages.size()-1);
+                binding.chatRecyclerView.smoothScrollToPosition(chatMessages.size()-1);
             }
-//            binding.chatRecyclerView.setVisibility(View.VISIBLE);
+            binding.chatRecyclerView.setVisibility(View.VISIBLE);
         }
         binding.progressBar.setVisibility(View.GONE);
     };
     private void listenMessage(){
         firebaseFirestore.collection(Constants.KEY_COLLECTION_CHAT).
-                whereEqualTo(Constants.KEY_SENDER_ID,preferenceManager.getString(Constants.KEY_SENDER_ID)).
-                whereEqualTo(Constants.KEY_RECIEVER_ID, receiver.getId()).
+                whereEqualTo(Constants.KEY_SENDER_ID,preferenceManager.getString(Constants.KEY_USER_ID)).
+                whereEqualTo(Constants.KEY_RECEIVER_ID, receiver.getId()).
                 addSnapshotListener(eventListener);
         firebaseFirestore.collection(Constants.KEY_COLLECTION_CHAT).
                 whereEqualTo(Constants.KEY_SENDER_ID, receiver.getId()).
-                whereEqualTo(Constants.KEY_RECIEVER_ID,preferenceManager.getString(Constants.KEY_SENDER_ID)).
+                whereEqualTo(Constants.KEY_RECEIVER_ID,preferenceManager.getString(Constants.KEY_USER_ID)).
                 addSnapshotListener(eventListener);
     }
 }

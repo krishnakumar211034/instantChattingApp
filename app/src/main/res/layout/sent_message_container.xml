@@ -11,6 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintWidth_max="wrap"
         android:textSize="13sp"
         android:padding="12dp"
         android:textColor="@color/white"
